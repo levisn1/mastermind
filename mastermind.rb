@@ -1,22 +1,47 @@
 class Player
-  attr_reader :hypothesis
+  attr_accessor :hypothesis
   def initialize
     @hypothesis = []
   end
 
   def select
-    puts 'Select the 4 colours separating them with a space'
+    puts 'Please formulate your hypothesis'
     selection = gets.chomp.to_s.split
-    if selection.length > 4
-      puts 'Too many colours'
+    if selection.length > 4 or selection.length < 4 or
+      puts 'Respect the rules'
       self.select
     else
-      @hypothesis = selection
-      #puts 'You selected the following colours:'
-      #puts @hypothesis.join(' ')
+      self.hypothesis = selection
     end
   end
 end
 
-lol = Player.new
-lol.select
+class Game
+  def initialize(player)
+    @possibilities = ['white', 'yellow', 'brown', 'red', 'blue', 'orange', 'black', 'green']
+    @secret_code = @possibilities.sample(4)
+    @player = player
+  end
+  def start
+    p @secret_code
+    c = 0
+    @player.select
+    while c < 10
+      if @player.hypothesis == @secret_code
+        puts 'You won'
+        break
+      else
+        @player.select
+        c += 1
+      end
+    end
+    puts 'Hai esaurito i tentativi'
+  end
+end
+
+player = Player.new
+game = Game.new(player)
+game.start
+
+
+
